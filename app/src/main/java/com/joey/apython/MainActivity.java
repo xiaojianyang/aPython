@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.srplab.www.starcore.StarCoreFactory;
 import com.srplab.www.starcore.StarCoreFactoryPath;
@@ -14,10 +18,14 @@ import com.srplab.www.starcore.StarSrvGroupClass;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static com.joey.apython.Exe.TAG;
 
 // https://www.programmersought.com/article/51306677043/
 
@@ -28,12 +36,30 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        TextView tv = new TextView(this);
+        tv.setText("haha");
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "shellExecSu ret: " + Exe.test());
+            }
+        });
+        setContentView(tv);
+
         final File appFile = getFilesDir();  /*-- /data/data/packageName/files --*/
         final String appLib = getApplicationInfo().nativeLibraryDir;
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 loadPy(appFile, appLib);
+
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Exe.relative();
+                    }
+                }, 5000);
             }
         });
     }

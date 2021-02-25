@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ccom.joey.apython">
 
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
     <application android:allowBackup="true">
         <activity android:name="com.joey.apython.MainActivity">
             <intent-filter>
